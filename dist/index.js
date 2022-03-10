@@ -184,12 +184,6 @@ function run() {
                 const result = yield cursor.toArray();
                 res.send(result);
             }));
-            app.get('/ven', (req, res) => __awaiter(this, void 0, void 0, function* () {
-                console.log("came");
-                const cursor = users.find({ AccountType: "vendor" });
-                const result = yield cursor.toArray();
-                res.send(result);
-            }));
             /* nobel vai here */
             /* alamgir vai here */
             /* alamgir vai here */

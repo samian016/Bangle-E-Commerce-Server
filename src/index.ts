@@ -264,12 +264,7 @@ async function run() {
             const result = await cursor.toArray();
             res.send(result);
         })
-        app.get('/ven', async (req: Request, res: Response) => {
-            console.log("came");
-            const cursor = users.find({ AccountType: "vendor" });
-            const result = await cursor.toArray();
-            res.send(result);
-        })
+        
 
         /* nobel vai here */
 
