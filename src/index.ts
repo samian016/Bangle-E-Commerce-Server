@@ -185,6 +185,7 @@ async function run() {
 
         app.get("/products", async (req: Request, res: Response) => {
             const cursor = productsCollection.find({});
+            console.log("ioujghi");
             const result: {
                 _id: string,
                 productTitle: string,
@@ -258,6 +259,12 @@ async function run() {
         /* nobel vai here */
 
         app.get('/vendors', async (req: Request, res: Response) => {
+            console.log("came");
+            const cursor = users.find({ AccountType: "vendor" });
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+        app.get('/ven', async (req: Request, res: Response) => {
             console.log("came");
             const cursor = users.find({ AccountType: "vendor" });
             const result = await cursor.toArray();

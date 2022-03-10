@@ -122,6 +122,7 @@ function run() {
             }));
             app.get("/products", (req, res) => __awaiter(this, void 0, void 0, function* () {
                 const cursor = productsCollection.find({});
+                console.log("ioujghi");
                 const result = yield cursor.toArray();
                 // console.log(result);
                 res.send(result);
@@ -177,6 +178,18 @@ function run() {
             }));
             /* mizan vai here */
             /* nobel vai here */
+            app.get('/vendors', (req, res) => __awaiter(this, void 0, void 0, function* () {
+                console.log("came");
+                const cursor = users.find({ AccountType: "vendor" });
+                const result = yield cursor.toArray();
+                res.send(result);
+            }));
+            app.get('/ven', (req, res) => __awaiter(this, void 0, void 0, function* () {
+                console.log("came");
+                const cursor = users.find({ AccountType: "vendor" });
+                const result = yield cursor.toArray();
+                res.send(result);
+            }));
             /* nobel vai here */
             /* alamgir vai here */
             /* alamgir vai here */
