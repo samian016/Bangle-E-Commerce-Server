@@ -186,6 +186,14 @@ function run() {
             }));
             /* nobel vai here */
             /* alamgir vai here */
+            // Fatch Single Category
+            app.get("/singlecategory/:categoryName", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const cursor = req.params.categoryName;
+                const query = { Category: cursor };
+                //db.store.find({ "author": { "$cursorData": ["xyz"]} })
+                const result = yield productsCollection.find(query).toArray();
+                res.json(result);
+            }));
             /* alamgir vai here */
             /* write your code before this middle ware, this was youse to unable routes */
             app.use(() => {

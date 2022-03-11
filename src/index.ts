@@ -272,7 +272,14 @@ async function run() {
 
         /* alamgir vai here */
 
-
+        // Fatch Single Category
+        app.get("/singlecategory/:categoryName", async (req: Request, res: Response) => {
+            const cursor = req.params.categoryName;
+            const query = { Category: cursor };
+            //db.store.find({ "author": { "$cursorData": ["xyz"]} })
+            const result = await productsCollection.find(query).toArray();
+            res.json(result);
+        })
 
         /* alamgir vai here */
 
