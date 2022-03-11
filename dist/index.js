@@ -186,6 +186,13 @@ function run() {
             }));
             /* nobel vai here */
             /* alamgir vai here */
+            app.get("/singlecategory/:categoryname", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const cursor = req.params.categoryname;
+                const query = { Category: cursor };
+                //db.store.find({ "author": { "$cursorData": ["xyz"]} })
+                const result = yield productsCollection.find(query).toArray();
+                res.json(result);
+            }));
             /* alamgir vai here */
             /* write your code before this middle ware, this was youse to unable routes */
             app.use(() => {

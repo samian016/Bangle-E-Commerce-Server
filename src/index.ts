@@ -272,7 +272,13 @@ async function run() {
 
         /* alamgir vai here */
 
-
+        app.get("/singlecategory/:categoryname", async (req: Request, res: Response) => {
+            const cursor = req.params.categoryname;
+            const query = { Category: cursor };
+            //db.store.find({ "author": { "$cursorData": ["xyz"]} })
+            const result = await productsCollection.find(query).toArray();
+            res.json(result);
+        })
 
         /* alamgir vai here */
 
