@@ -69,7 +69,7 @@ function run() {
             }));
             /* Category part */
             app.put("/category/:category", (req, res) => __awaiter(this, void 0, void 0, function* () {
-                const category = req.params.category;
+                const category = req.params.category.toLocaleLowerCase();
                 const filter = { categoryName: category };
                 const options = { upsert: true };
                 const updateDoc = { $set: { categoryName: category } };

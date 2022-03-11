@@ -77,7 +77,7 @@ async function run() {
 
         /* Category part */
         app.put("/category/:category", async (req: Request, res: Response) => {
-            const category: string = req.params.category;
+            const category: string = req.params.category.toLocaleLowerCase();
             const filter: { categoryName: string } = { categoryName: category };
             const options: { upsert: boolean } = { upsert: true };
             const updateDoc: { $set: { categoryName: string } } = { $set: { categoryName: category } };
