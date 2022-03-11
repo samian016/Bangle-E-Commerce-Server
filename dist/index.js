@@ -186,9 +186,14 @@ function run() {
             }));
             /* nobel vai here */
             /* alamgir vai here */
+<<<<<<< HEAD
             // Fatch Single Category
             app.get("/singlecategory/:categoryName", (req, res) => __awaiter(this, void 0, void 0, function* () {
                 const cursor = req.params.categoryName;
+=======
+            app.get("/singlecategory/:categoryname", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const cursor = req.params.categoryname;
+>>>>>>> 96ca0d2a2949c32dcb6b1cf4df47909d7c171973
                 const query = { Category: cursor };
                 //db.store.find({ "author": { "$cursorData": ["xyz"]} })
                 const result = yield productsCollection.find(query).toArray();
