@@ -142,6 +142,14 @@ async function run() {
             }
             res.json({ admin: isAdmin });
         });
+        app.delete("/delete/category/:id", async (req: Request, res: Response) => {
+            const id = req.params.id;
+            // console.log(id);
+            const query = { _id: ObjectId(id) };
+            const result = await categoris.deleteOne(query);
+            console.log(id);
+            res.json(result);
+        })
         /* shohag vai here */
 
 
