@@ -310,6 +310,13 @@ async function run() {
             const result = await productsCollection.find(query).toArray();
             res.json(result);
         })
+        app.get("/single/:id", async (req: Request, res: Response) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await categoris.findOne(query);
+            // console.log(id,"m");
+            res.json(result);
+        })
 
         /* alamgir vai here */
 

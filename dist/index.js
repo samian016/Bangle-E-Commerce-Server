@@ -221,6 +221,13 @@ function run() {
                 const result = yield productsCollection.find(query).toArray();
                 res.json(result);
             }));
+            app.get("/single/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const id = req.params.id;
+                const query = { _id: ObjectId(id) };
+                const result = yield categoris.findOne(query);
+                // console.log(id,"m");
+                res.json(result);
+            }));
             /* alamgir vai here */
             /* write your code before this middle ware, this was youse to unable routes */
             app.use(() => {
