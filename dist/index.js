@@ -120,6 +120,14 @@ function run() {
                 }
                 res.json({ admin: isAdmin });
             }));
+            app.delete("/delete/category/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const id = req.params.id;
+                // console.log(id);
+                const query = { _id: ObjectId(id) };
+                const result = yield categoris.deleteOne(query);
+                console.log(id);
+                res.json(result);
+            }));
             app.get("/products", (req, res) => __awaiter(this, void 0, void 0, function* () {
                 const cursor = productsCollection.find({
                     isApproved: true
