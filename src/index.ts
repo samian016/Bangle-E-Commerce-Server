@@ -128,7 +128,7 @@ async function run() {
             res.json(result);
         });
 
-/* this is something */
+        /* this is something */
 
 
         app.get("/users/:email", async (req: Request, res: Response) => {
@@ -144,7 +144,7 @@ async function run() {
         });
         /* shohag vai here */
 
-        
+
 
 
         /* shohag vai here */
@@ -184,8 +184,22 @@ async function run() {
         }
 
         app.get("/products", async (req: Request, res: Response) => {
-            const cursor = productsCollection.find({});
-            console.log("ioujghi");
+            const cursor = productsCollection.find({
+                isApproved: true
+            });
+            // console.log("ioujghi");
+            const result: {
+                _id: string,
+                productTitle: string,
+            } = await cursor.toArray();
+            // console.log(result);
+            res.send(result);
+        })
+        app.get("/productForapprove", async (req: Request, res: Response) => {
+            const cursor = productsCollection.find({
+                isApproved: false
+            });
+            // console.log("ioujghi");
             const result: {
                 _id: string,
                 productTitle: string,
@@ -195,7 +209,7 @@ async function run() {
         })
 
 
-       
+
 
         //Single Product Data
         app.get("/products/:productID", async (req: Request, res: Response) => {
@@ -205,6 +219,7 @@ async function run() {
             const result = await productsCollection.find(query).toArray();
             res.json(result);
         })
+
 
         app.post("/products/add", async (req: Request, res: Response) => {
             const products: IProducts = req.body;
@@ -237,21 +252,29 @@ async function run() {
 
         // Delete
 
-        app.delete('/products/delete/:id', async (req: Request, res: Response) => {
+        app.delete('/delete/:id', async (req: Request, res: Response) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await productsCollection.deleteOne(query);
+            console.log(id);
             res.json(result);
         });
 
         // Newsletter
         app.post("/newsletter", async (req: Request, res: Response) => {
-            const subscriber: { email: string | null} = req.body;
+            const subscriber: { email: string | null } = req.body;
             const result = await subscribersCollection.insertOne(subscriber);
             // console.log('heating');
             res.send(result);
         })
-
+        app.put("/approved/:id", async (req: Request, res: Response) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            // console.log(id);
+            const updateDoc = { $set: { isApproved: true } };
+            const result = await productsCollection.updateOne(filter, updateDoc);
+            res.json(result);
+        });
         /* mizan vai here */
 
 
@@ -264,7 +287,7 @@ async function run() {
             const result = await cursor.toArray();
             res.send(result);
         })
-        
+
 
         /* nobel vai here */
 

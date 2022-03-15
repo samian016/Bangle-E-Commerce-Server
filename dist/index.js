@@ -121,8 +121,19 @@ function run() {
                 res.json({ admin: isAdmin });
             }));
             app.get("/products", (req, res) => __awaiter(this, void 0, void 0, function* () {
-                const cursor = productsCollection.find({});
-                console.log("ioujghi");
+                const cursor = productsCollection.find({
+                    isApproved: true
+                });
+                // console.log("ioujghi");
+                const result = yield cursor.toArray();
+                // console.log(result);
+                res.send(result);
+            }));
+            app.get("/productForapprove", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const cursor = productsCollection.find({
+                    isApproved: false
+                });
+                // console.log("ioujghi");
                 const result = yield cursor.toArray();
                 // console.log(result);
                 res.send(result);
@@ -163,10 +174,11 @@ function run() {
                 res.json(result);
             }));
             // Delete
-            app.delete('/products/delete/:id', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            app.delete('/delete/:id', (req, res) => __awaiter(this, void 0, void 0, function* () {
                 const id = req.params.id;
                 const query = { _id: ObjectId(id) };
                 const result = yield productsCollection.deleteOne(query);
+                console.log(id);
                 res.json(result);
             }));
             // Newsletter
@@ -175,6 +187,14 @@ function run() {
                 const result = yield subscribersCollection.insertOne(subscriber);
                 // console.log('heating');
                 res.send(result);
+            }));
+            app.put("/approved/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const id = req.params.id;
+                const filter = { _id: ObjectId(id) };
+                // console.log(id);
+                const updateDoc = { $set: { isApproved: true } };
+                const result = yield productsCollection.updateOne(filter, updateDoc);
+                res.json(result);
             }));
             /* mizan vai here */
             /* nobel vai here */
