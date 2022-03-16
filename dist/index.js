@@ -128,6 +128,20 @@ function run() {
                 console.log(id);
                 res.json(result);
             }));
+            app.put("/categoryWise", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const cursor = req.body.name.toLocaleLowerCase();
+                const query = { Category: cursor };
+                // console.log(cursor);
+                const result = yield productsCollection.find(query).toArray();
+                // console.log(result);
+                res.json(result);
+            }));
+            app.get("/single/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const id = req.params.id;
+                const query = { _id: ObjectId(id) };
+                const result = yield categoris.findOne(query);
+                res.json(result);
+            }));
             app.get("/products", (req, res) => __awaiter(this, void 0, void 0, function* () {
                 const cursor = productsCollection.find({
                     isApproved: true
@@ -214,20 +228,6 @@ function run() {
             }));
             /* nobel vai here */
             /* alamgir vai here */
-            app.get("/singlecategory/:categoryname", (req, res) => __awaiter(this, void 0, void 0, function* () {
-                const cursor = req.params.categoryname;
-                const query = { Category: cursor };
-                //db.store.find({ "author": { "$cursorData": ["xyz"]} })
-                const result = yield productsCollection.find(query).toArray();
-                res.json(result);
-            }));
-            app.get("/single/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
-                const id = req.params.id;
-                const query = { _id: ObjectId(id) };
-                const result = yield categoris.findOne(query);
-                // console.log(id,"m");
-                res.json(result);
-            }));
             /* alamgir vai here */
             /* write your code before this middle ware, this was youse to unable routes */
             app.use(() => {

@@ -150,6 +150,23 @@ async function run() {
             console.log(id);
             res.json(result);
         })
+
+        app.put("/categoryWise", async (req: Request, res: Response) => {
+            const cursor = req.body.name.toLocaleLowerCase();
+
+            const query = { Category: cursor };
+            // console.log(cursor);
+            const result = await productsCollection.find(query).toArray();
+            // console.log(result);
+
+            res.json(result);
+        })
+        app.get("/single/:id", async (req: Request, res: Response) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await categoris.findOne(query);
+            res.json(result);
+        })
         /* shohag vai here */
 
 
@@ -303,20 +320,7 @@ async function run() {
 
         /* alamgir vai here */
 
-        app.get("/singlecategory/:categoryname", async (req: Request, res: Response) => {
-            const cursor = req.params.categoryname;
-            const query = { Category: cursor };
-            //db.store.find({ "author": { "$cursorData": ["xyz"]} })
-            const result = await productsCollection.find(query).toArray();
-            res.json(result);
-        })
-        app.get("/single/:id", async (req: Request, res: Response) => {
-            const id = req.params.id;
-            const query = { _id: ObjectId(id) };
-            const result = await categoris.findOne(query);
-            // console.log(id,"m");
-            res.json(result);
-        })
+        
 
         /* alamgir vai here */
 
