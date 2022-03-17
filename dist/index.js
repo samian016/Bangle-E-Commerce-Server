@@ -196,7 +196,7 @@ function run() {
                 res.json(result);
             }));
             // Delete
-            app.delete('/delete/:id', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            app.delete('/products/delete/:id', (req, res) => __awaiter(this, void 0, void 0, function* () {
                 const id = req.params.id;
                 const query = { _id: ObjectId(id) };
                 const result = yield productsCollection.deleteOne(query);

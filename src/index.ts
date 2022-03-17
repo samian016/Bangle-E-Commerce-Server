@@ -187,7 +187,7 @@ async function run() {
 
 
         /**********************************/
-        /********* Mizan Bhai Here *********/
+        /********* Mizan Bhai Here ********/
         /**********************************/
 
         interface IProducts {
@@ -277,7 +277,7 @@ async function run() {
 
         // Delete
 
-        app.delete('/delete/:id', async (req: Request, res: Response) => {
+        app.delete('/products/delete/:id', async (req: Request, res: Response) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await productsCollection.deleteOne(query);
