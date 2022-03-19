@@ -95,6 +95,15 @@ async function run() {
             // console.log(result);
             res.send(result);
         })
+        app.get("/all", async (req: Request, res: Response) => {
+            const cursor = categoris.find({});
+            const result: {
+                _id: string,
+                categoryName: string,
+            } = await cursor.toArray();
+            // console.log(result);
+            res.send(result);
+        })
 
         app.post('/user', async (req: Request, res: Response) => {
             const email: string = req.body.email;

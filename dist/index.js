@@ -83,6 +83,12 @@ function run() {
                 // console.log(result);
                 res.send(result);
             }));
+            app.get("/all", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const cursor = categoris.find({});
+                const result = yield cursor.toArray();
+                // console.log(result);
+                res.send(result);
+            }));
             app.post('/user', (req, res) => __awaiter(this, void 0, void 0, function* () {
                 const email = req.body.email;
                 // console.log(email);
