@@ -69,21 +69,16 @@ function run() {
             }));
             /* Category part */
             app.put("/category/:category", (req, res) => __awaiter(this, void 0, void 0, function* () {
-                const category = req.params.category.toLocaleLowerCase();
-                const filter = { categoryName: category };
+                const category = req.body;
+                // console.log("object");
+                const filter = { categoryName: category.categoryName };
                 const options = { upsert: true };
-                const updateDoc = { $set: { categoryName: category } };
+                const updateDoc = { $set: category };
                 const result = yield categoris.updateOne(filter, updateDoc, options);
-                console.log(result, "hetting");
+                // console.log(result, "hetting");
                 res.json(result);
             }));
             app.get("/categories", (req, res) => __awaiter(this, void 0, void 0, function* () {
-                const cursor = categoris.find({});
-                const result = yield cursor.toArray();
-                // console.log(result);
-                res.send(result);
-            }));
-            app.get("/all", (req, res) => __awaiter(this, void 0, void 0, function* () {
                 const cursor = categoris.find({});
                 const result = yield cursor.toArray();
                 // console.log(result);

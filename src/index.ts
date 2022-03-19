@@ -77,25 +77,17 @@ async function run() {
 
         /* Category part */
         app.put("/category/:category", async (req: Request, res: Response) => {
-            const category: string = req.params.category.toLocaleLowerCase();
-            const filter: { categoryName: string } = { categoryName: category };
+            const category = req.body;
+            // console.log("object");
+            const filter: { categoryName: string } = { categoryName: category.categoryName };
             const options: { upsert: boolean } = { upsert: true };
-            const updateDoc: { $set: { categoryName: string } } = { $set: { categoryName: category } };
+            const updateDoc: { $set: { categoryName: string, img: string } } = { $set:  category  };
             const result = await categoris.updateOne(filter, updateDoc, options);
-            console.log(result, "hetting");
+            // console.log(result, "hetting");
             res.json(result);
         })
 
         app.get("/categories", async (req: Request, res: Response) => {
-            const cursor = categoris.find({});
-            const result: {
-                _id: string,
-                categoryName: string,
-            } = await cursor.toArray();
-            // console.log(result);
-            res.send(result);
-        })
-        app.get("/all", async (req: Request, res: Response) => {
             const cursor = categoris.find({});
             const result: {
                 _id: string,
