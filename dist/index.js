@@ -49,6 +49,8 @@ function run() {
             const categoris = BanglaEcommerce.collection("category");
             const productsCollection = BanglaEcommerce.collection("products");
             const subscribersCollection = BanglaEcommerce.collection("subscribers");
+            const featuredProductsCollection = BanglaEcommerce.collection("featuredProducts");
+            const blogCollection = BanglaEcommerce.collection("blogs");
             // storing users 
             // new user 
             app.post("/users", (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -211,16 +213,61 @@ function run() {
                 // console.log('heating');
                 res.send(result);
             }));
-            app.put("/approved/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
-                const id = req.params.id;
-                const filter = { _id: ObjectId(id) };
-                // console.log(id);
-                const updateDoc = { $set: { isApproved: true } };
-                const result = yield productsCollection.updateOne(filter, updateDoc);
+            app.post("/featuredProducts/add", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const featuredProducts = req.body;
+                featuredProducts.StartDate.toLocaleString();
+                featuredProducts.EndDate.toLocaleString();
+                const result = yield featuredProductsCollection.insertOne(featuredProducts);
                 res.json(result);
             }));
-            /* mizan vai here */
-            /* nobel vai here */
+            app.get('/featuredProducts', (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const cursor = featuredProductsCollection.find({ Status: "Yes" });
+                console.log(cursor);
+                const result = yield cursor.toArray();
+                res.send(result);
+            }));
+            ///// Blog /////
+            // Blog Add
+            app.post("/blog/add", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const blogs = req.body;
+                const result = yield blogCollection.insertOne(blogs);
+                res.send(result);
+            }));
+            // Get All Blogs
+            app.get("/blogs", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const cursor = blogCollection.find({ isApproved: true });
+                const result = yield cursor.toArray();
+                res.send(result);
+            }));
+            app.get("/blogs/dashboard", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const cursor = blogCollection.find({});
+                const result = yield cursor.toArray();
+                res.send(result);
+            }));
+            // Blog Post Approve
+            app.put("/blogs/dashboard/approve/:blogId", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const myData = req.params.blogId;
+                console.log(myData);
+                const query = { _id: ObjectId(myData) };
+                const updateDoc = { $set: { isApproved: true } };
+                const result = yield blogCollection.updateOne(query, updateDoc);
+                res.json(result);
+            }));
+            // Get Single Blog
+            app.get("/singleBlog/:blogID", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const id = req.params.blogID;
+                const query = { _id: ObjectId(id) };
+                const result = yield blogCollection.find(query).toArray();
+                res.json(result);
+            }));
+            // Blog delete
+            app.delete("/blogs/delete/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const cursor = req.params.id;
+                console.log(cursor);
+                const query = { _id: ObjectId(cursor) };
+                const result = yield blogCollection.deleteOne(query);
+                res.send(result);
+            }));
             app.get('/vendors', (req, res) => __awaiter(this, void 0, void 0, function* () {
                 console.log("came");
                 const cursor = users.find({ AccountType: "vendor" });
