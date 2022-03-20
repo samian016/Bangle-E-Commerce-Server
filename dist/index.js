@@ -49,6 +49,7 @@ function run() {
             const categoris = BanglaEcommerce.collection("category");
             const productsCollection = BanglaEcommerce.collection("products");
             const subscribersCollection = BanglaEcommerce.collection("subscribers");
+            const checkoutCollection = BanglaEcommerce.collection("checkout");
             // storing users 
             // new user 
             app.post("/users", (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -142,6 +143,18 @@ function run() {
                 const query = { _id: ObjectId(id) };
                 const result = yield categoris.findOne(query);
                 res.json(result);
+            }));
+            app.post("/checkout/add", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const checkout = req.body;
+                console.log(checkout);
+                const results = yield checkoutCollection.insertOne(checkout);
+                res.json(results);
+            }));
+            app.get("/checkout", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const cursor = checkoutCollection.find({});
+                const result = yield cursor.toArray();
+                console.log(result);
+                res.send(result);
             }));
             app.get("/products", (req, res) => __awaiter(this, void 0, void 0, function* () {
                 const cursor = productsCollection.find({

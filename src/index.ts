@@ -52,6 +52,7 @@ async function run() {
         const categoris = BanglaEcommerce.collection("category");
         const productsCollection = BanglaEcommerce.collection("products");
         const subscribersCollection = BanglaEcommerce.collection("subscribers");
+        const checkoutCollection = BanglaEcommerce.collection("checkout");
 
 
 
@@ -179,8 +180,50 @@ async function run() {
 
 
         /* Emon vai here */
+        interface ICheckout {
+            firstName: string,
+            lastName: string,
+            emailAddress: string,
+            phoneNumber: string,
+            addres: string,
+            aptHouse: string,
+            contry: string,
+            cityTown: string,
+            postCode: string,
+            additionalInfo: string,
+            payment: string,
+            company:string,
+            cart: any
+        }
+        app.post("/checkout/add", async (req: Request, res: Response) => {
+            const checkout:ICheckout = req.body;
+            console.log(checkout);
+            
+            const results = await checkoutCollection.insertOne(checkout);
 
-
+            res.json(results);
+        })
+        app.get("/checkout", async (req: Request, res: Response) => {
+            const cursor = checkoutCollection.find({});
+            const result: {
+            _id: string,
+            firstName: string,
+            lastName: string,
+            emailAddress: string,
+            phoneNumber: string,
+            addres: string,
+            aptHouse: string,
+            contry: string,
+            cityTown: string,
+            postCode: string,
+            additionalInfo: string,
+            payment: string,
+            company:string,
+            cart:any
+            } = await cursor.toArray();
+            console.log(result);
+            res.send(result);
+        })
 
 
         /* Emon vai here */
