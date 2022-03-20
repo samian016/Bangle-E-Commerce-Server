@@ -71,12 +71,13 @@ function run() {
             }));
             /* Category part */
             app.put("/category/:category", (req, res) => __awaiter(this, void 0, void 0, function* () {
-                const category = req.params.category;
-                const filter = { categoryName: category };
+                const category = req.body;
+                // console.log("object");
+                const filter = { categoryName: category.categoryName };
                 const options = { upsert: true };
-                const updateDoc = { $set: { categoryName: category } };
+                const updateDoc = { $set: category };
                 const result = yield categoris.updateOne(filter, updateDoc, options);
-                console.log(result, "hetting");
+                // console.log(result, "hetting");
                 res.json(result);
             }));
             app.get("/categories", (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -122,9 +123,42 @@ function run() {
                 }
                 res.json({ admin: isAdmin });
             }));
+            app.delete("/delete/category/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const id = req.params.id;
+                // console.log(id);
+                const query = { _id: ObjectId(id) };
+                const result = yield categoris.deleteOne(query);
+                console.log(id);
+                res.json(result);
+            }));
+            app.put("/categoryWise", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const cursor = req.body.name.toLocaleLowerCase();
+                const query = { Category: cursor };
+                // console.log(cursor);
+                const result = yield productsCollection.find(query).toArray();
+                // console.log(result);
+                res.json(result);
+            }));
+            app.get("/single/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const id = req.params.id;
+                const query = { _id: ObjectId(id) };
+                const result = yield categoris.findOne(query);
+                res.json(result);
+            }));
             app.get("/products", (req, res) => __awaiter(this, void 0, void 0, function* () {
-                const cursor = productsCollection.find({});
-                console.log("ioujghi");
+                const cursor = productsCollection.find({
+                    isApproved: true
+                });
+                // console.log("ioujghi");
+                const result = yield cursor.toArray();
+                // console.log(result);
+                res.send(result);
+            }));
+            app.get("/productForapprove", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const cursor = productsCollection.find({
+                    isApproved: false
+                });
+                // console.log("ioujghi");
                 const result = yield cursor.toArray();
                 // console.log(result);
                 res.send(result);
@@ -169,6 +203,7 @@ function run() {
                 const id = req.params.id;
                 const query = { _id: ObjectId(id) };
                 const result = yield productsCollection.deleteOne(query);
+                console.log(id);
                 res.json(result);
             }));
             // Newsletter
@@ -178,7 +213,6 @@ function run() {
                 // console.log('heating');
                 res.send(result);
             }));
-            // Featured Products
             app.post("/featuredProducts/add", (req, res) => __awaiter(this, void 0, void 0, function* () {
                 const featuredProducts = req.body;
                 featuredProducts.StartDate.toLocaleString();
@@ -234,8 +268,6 @@ function run() {
                 const result = yield blogCollection.deleteOne(query);
                 res.send(result);
             }));
-            /* mizan vai here */
-            /* nobel vai here */
             app.get('/vendors', (req, res) => __awaiter(this, void 0, void 0, function* () {
                 console.log("came");
                 const cursor = users.find({ AccountType: "vendor" });
@@ -244,13 +276,6 @@ function run() {
             }));
             /* nobel vai here */
             /* alamgir vai here */
-            app.get("/singlecategory/:categoryname", (req, res) => __awaiter(this, void 0, void 0, function* () {
-                const cursor = req.params.categoryname;
-                const query = { Category: cursor };
-                //db.store.find({ "author": { "$cursorData": ["xyz"]} })
-                const result = yield productsCollection.find(query).toArray();
-                res.json(result);
-            }));
             /* alamgir vai here */
             /* write your code before this middle ware, this was youse to unable routes */
             app.use(() => {
