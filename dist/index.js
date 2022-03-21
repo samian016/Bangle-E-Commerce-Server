@@ -145,6 +145,14 @@ function run() {
                 const result = yield categoris.findOne(query);
                 res.json(result);
             }));
+            app.put("/approved/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const id = req.params.id;
+                const filter = { _id: ObjectId(id) };
+                // console.log(id);
+                const updateDoc = { $set: { isApproved: true } };
+                const result = yield productsCollection.updateOne(filter, updateDoc);
+                res.json(result);
+            }));
             app.get("/products", (req, res) => __awaiter(this, void 0, void 0, function* () {
                 const cursor = productsCollection.find({
                     isApproved: true
@@ -213,6 +221,7 @@ function run() {
                 // console.log('heating');
                 res.send(result);
             }));
+            // Featured Products
             app.post("/featuredProducts/add", (req, res) => __awaiter(this, void 0, void 0, function* () {
                 const featuredProducts = req.body;
                 featuredProducts.StartDate.toLocaleString();
@@ -268,6 +277,8 @@ function run() {
                 const result = yield blogCollection.deleteOne(query);
                 res.send(result);
             }));
+            /* mizan vai here */
+            /* nobel vai here */
             app.get('/vendors', (req, res) => __awaiter(this, void 0, void 0, function* () {
                 console.log("came");
                 const cursor = users.find({ AccountType: "vendor" });

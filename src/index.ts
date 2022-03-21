@@ -170,6 +170,16 @@ async function run() {
             const result = await categoris.findOne(query);
             res.json(result);
         })
+
+
+        app.put("/approved/:id", async (req: Request, res: Response) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            // console.log(id);
+            const updateDoc = { $set: { isApproved: true } };
+            const result = await productsCollection.updateOne(filter, updateDoc);
+            res.json(result);
+        });
         /* shohag vai here */
 
 
@@ -312,7 +322,6 @@ async function run() {
             // console.log('heating');
             res.send(result);
         })
-<<<<<<< HEAD
 
         // Featured Products
         app.post("/featuredProducts/add", async (req: Request, res: Response) => {
@@ -382,17 +391,6 @@ async function run() {
 
 
 
-
-=======
-        app.put("/approved/:id", async (req: Request, res: Response) => {
-            const id = req.params.id;
-            const filter = { _id: ObjectId(id) };
-            // console.log(id);
-            const updateDoc = { $set: { isApproved: true } };
-            const result = await productsCollection.updateOne(filter, updateDoc);
-            res.json(result);
-        });
->>>>>>> 9c2e295ef8a30fefe6e18df41a2ebc67b1c728bb
         /* mizan vai here */
 
 
