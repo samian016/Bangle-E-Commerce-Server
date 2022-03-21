@@ -180,6 +180,13 @@ async function run() {
             const result = await productsCollection.updateOne(filter, updateDoc);
             res.json(result);
         });
+        app.delete('/delete/:id', async (req: Request, res: Response) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await productsCollection.deleteOne(query);
+            // console.log(id);
+            res.json(result);
+        });
         /* shohag vai here */
 
 
