@@ -123,6 +123,17 @@ function run() {
                 }
                 res.json({ admin: isAdmin });
             }));
+            app.get("/user/:email", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const email = req.params.email;
+                const query = { email: email };
+                const user = yield users.findOne(query);
+                let isVendor = false;
+                if ((user === null || user === void 0 ? void 0 : user.AccountType) === 'vendor') {
+                    // console.log(user.isAdmin);
+                    isVendor = true;
+                }
+                res.json({ vendor: isVendor });
+            }));
             app.delete("/delete/category/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
                 const id = req.params.id;
                 // console.log(id);

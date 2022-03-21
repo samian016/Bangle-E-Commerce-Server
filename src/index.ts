@@ -145,6 +145,18 @@ async function run() {
             }
             res.json({ admin: isAdmin });
         });
+        app.get("/user/:email", async (req: Request, res: Response) => {
+            const email = req.params.email;
+            const query = { email: email };
+            const user = await users.findOne(query);
+            let isVendor = false;
+            if (user?.AccountType ==='vendor') {
+                // console.log(user.isAdmin);
+                isVendor = true;
+            }
+            res.json({ vendor: isVendor });
+        });
+
         app.delete("/delete/category/:id", async (req: Request, res: Response) => {
             const id = req.params.id;
             // console.log(id);
