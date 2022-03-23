@@ -222,7 +222,72 @@ async function run() {
         /* shohag vai here */
 
 
+        /* Emon vai here */
+        interface ICheckout {
+            firstName: string,
+            lastName: string,
+            emailAddress: string,
+            phoneNumber: string,
+            addres: string,
+            aptHouse: string,
+            contry: string,
+            cityTown: string,
+            postCode: string,
+            additionalInfo: string,
+            payment: string,
+            company:string,
+            cart: any
+        }
+        app.post("/checkout/add", async (req: Request, res: Response) => {
+            const checkout:ICheckout = req.body;
+            const results = await checkoutCollection.insertOne(checkout);
+            res.json(results);
+        })
+        app.get("/checkout", async (req: Request, res: Response) => {
+            const cursor = checkoutCollection.find({});
+            const result: {
+            _id: string,
+            firstName: string,
+            lastName: string,
+            emailAddress: string,
+            phoneNumber: string,
+            addres: string,
+            aptHouse: string,
+            contry: string,
+            cityTown: string,
+            postCode: string,
+            additionalInfo: string,
+            payment: string,
+            company:string,
+            cart:any
+            } = await cursor.toArray();
+            res.send(result);
+        })
+        app.get("/pendingCheckout", async(req: Request, res: Response) =>{
+            const cursor = checkoutCollection.find({isApproved: false });
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+        app.get("/pendingCheckout", async(req: Request, res: Response) =>{
+            const cursor = checkoutCollection.find({isApproved: false });
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+                app.put("/checkout/:id", async (req: Request, res: Response) => {
+                    const myData = req.params.id;
+                    const query = { _id: ObjectId(myData) };
+                    const updateDoc = { $set: { isApproved: true } };
+                    const result = await checkoutCollection.updateOne(query, updateDoc);
+                    res.json(result);
+                });
+                app.delete("/checkout/:id", async(req:Request, res:Response) =>{
+                    const cursor = req.params.id;
+                    const query = {_id: ObjectId(cursor)};
+                    const result = await checkoutCollection.deleteOne(query);
+                    res.send(result);
+                })
 
+        /* Emon vai here */
 
 
 
