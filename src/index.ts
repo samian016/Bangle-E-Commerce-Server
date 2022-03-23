@@ -53,6 +53,8 @@ async function run() {
         const productsCollection = BanglaEcommerce.collection("products");
         const subscribersCollection = BanglaEcommerce.collection("subscribers");
         const checkoutCollection = BanglaEcommerce.collection("checkout");
+        const featuredProductsCollection = BanglaEcommerce.collection("featuredProducts");
+        const blogCollection = BanglaEcommerce.collection("blogs");
 
 
 
@@ -144,6 +146,18 @@ async function run() {
             }
             res.json({ admin: isAdmin });
         });
+        app.get("/user/:email", async (req: Request, res: Response) => {
+            const email = req.params.email;
+            const query = { email: email };
+            const user = await users.findOne(query);
+            let isVendor = false;
+            if (user?.AccountType ==='vendor') {
+                // console.log(user.isAdmin);
+                isVendor = true;
+            }
+            res.json({ vendor: isVendor });
+        });
+
         app.delete("/delete/category/:id", async (req: Request, res: Response) => {
             const id = req.params.id;
             // console.log(id);
@@ -169,6 +183,23 @@ async function run() {
             const result = await categoris.findOne(query);
             res.json(result);
         })
+
+
+        app.put("/approved/:id", async (req: Request, res: Response) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            // console.log(id);
+            const updateDoc = { $set: { isApproved: true } };
+            const result = await productsCollection.updateOne(filter, updateDoc);
+            res.json(result);
+        });
+        app.delete('/delete/:id', async (req: Request, res: Response) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await productsCollection.deleteOne(query);
+            // console.log(id);
+            res.json(result);
+        });
         /* shohag vai here */
 
 
@@ -261,6 +292,23 @@ async function run() {
             sellerID?: string
         }
 
+        interface IFeaturedProducts {
+            _id?: string,
+            ProductName: string,
+            Status: string,
+            StartDate: string,
+            EndDate: string
+        }
+
+        interface IBlog {
+            _id?: string,
+            title: string,
+            description: string,
+            image: string,
+            authorName: string,
+            postTime: string
+        }
+
         app.get("/products", async (req: Request, res: Response) => {
             const cursor = productsCollection.find({
                 isApproved: true
@@ -345,14 +393,75 @@ async function run() {
             // console.log('heating');
             res.send(result);
         })
-        app.put("/approved/:id", async (req: Request, res: Response) => {
-            const id = req.params.id;
-            const filter = { _id: ObjectId(id) };
-            // console.log(id);
+
+        // Featured Products
+        app.post("/featuredProducts/add", async (req: Request, res: Response) => {
+            const featuredProducts: IFeaturedProducts = req.body;
+            featuredProducts.StartDate.toLocaleString();
+            featuredProducts.EndDate.toLocaleString();
+            const result = await featuredProductsCollection.insertOne(featuredProducts);
+            res.json(result);
+        })
+
+        app.get('/featuredProducts', async (req: Request, res: Response) => {
+            const cursor = featuredProductsCollection.find({ Status: "Yes" });
+            console.log(cursor);
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+
+        ///// Blog /////
+
+        // Blog Add
+        app.post("/blog/add", async(req: Request, res: Response) =>{
+            const blogs: IBlog = req.body;
+            const result = await blogCollection.insertOne(blogs);
+            res.send(result);
+        })
+
+        // Get All Blogs
+        app.get("/blogs", async(req: Request, res: Response) =>{
+            const cursor = blogCollection.find({isApproved: true });
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+
+        app.get("/blogs/dashboard", async(req: Request, res: Response) =>{
+            const cursor = blogCollection.find({});
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+
+        // Blog Post Approve
+        app.put("/blogs/dashboard/approve/:blogId", async (req: Request, res: Response) => {
+            const myData = req.params.blogId;
+            console.log(myData);
+            const query = { _id: ObjectId(myData) };
             const updateDoc = { $set: { isApproved: true } };
-            const result = await productsCollection.updateOne(filter, updateDoc);
+            const result = await blogCollection.updateOne(query, updateDoc);
             res.json(result);
         });
+
+        // Get Single Blog
+        app.get("/singleBlog/:blogID", async(req: Request, res: Response) =>{
+            const id = req.params.blogID;
+            const query = {_id: ObjectId(id)}
+            const result = await blogCollection.find(query).toArray();
+            res.json(result);
+        })
+
+        // Blog delete
+        app.delete("/blogs/delete/:id", async(req:Request, res:Response) =>{
+            const cursor = req.params.id;
+            console.log(cursor);
+            const query = {_id: ObjectId(cursor)};
+            const result = await blogCollection.deleteOne(query);
+            res.send(result);
+        })
+
+
+
+
         /* mizan vai here */
 
 

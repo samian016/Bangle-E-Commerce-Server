@@ -50,6 +50,8 @@ function run() {
             const productsCollection = BanglaEcommerce.collection("products");
             const subscribersCollection = BanglaEcommerce.collection("subscribers");
             const checkoutCollection = BanglaEcommerce.collection("checkout");
+            const featuredProductsCollection = BanglaEcommerce.collection("featuredProducts");
+            const blogCollection = BanglaEcommerce.collection("blogs");
             // storing users 
             // new user 
             app.post("/users", (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -122,6 +124,17 @@ function run() {
                 }
                 res.json({ admin: isAdmin });
             }));
+            app.get("/user/:email", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const email = req.params.email;
+                const query = { email: email };
+                const user = yield users.findOne(query);
+                let isVendor = false;
+                if ((user === null || user === void 0 ? void 0 : user.AccountType) === 'vendor') {
+                    // console.log(user.isAdmin);
+                    isVendor = true;
+                }
+                res.json({ vendor: isVendor });
+            }));
             app.delete("/delete/category/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
                 const id = req.params.id;
                 // console.log(id);
@@ -142,6 +155,21 @@ function run() {
                 const id = req.params.id;
                 const query = { _id: ObjectId(id) };
                 const result = yield categoris.findOne(query);
+                res.json(result);
+            }));
+            app.put("/approved/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const id = req.params.id;
+                const filter = { _id: ObjectId(id) };
+                // console.log(id);
+                const updateDoc = { $set: { isApproved: true } };
+                const result = yield productsCollection.updateOne(filter, updateDoc);
+                res.json(result);
+            }));
+            app.delete('/delete/:id', (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const id = req.params.id;
+                const query = { _id: ObjectId(id) };
+                const result = yield productsCollection.deleteOne(query);
+                // console.log(id);
                 res.json(result);
             }));
             app.post("/checkout/add", (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -234,13 +262,61 @@ function run() {
                 // console.log('heating');
                 res.send(result);
             }));
-            app.put("/approved/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
-                const id = req.params.id;
-                const filter = { _id: ObjectId(id) };
-                // console.log(id);
-                const updateDoc = { $set: { isApproved: true } };
-                const result = yield productsCollection.updateOne(filter, updateDoc);
+            // Featured Products
+            app.post("/featuredProducts/add", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const featuredProducts = req.body;
+                featuredProducts.StartDate.toLocaleString();
+                featuredProducts.EndDate.toLocaleString();
+                const result = yield featuredProductsCollection.insertOne(featuredProducts);
                 res.json(result);
+            }));
+            app.get('/featuredProducts', (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const cursor = featuredProductsCollection.find({ Status: "Yes" });
+                console.log(cursor);
+                const result = yield cursor.toArray();
+                res.send(result);
+            }));
+            ///// Blog /////
+            // Blog Add
+            app.post("/blog/add", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const blogs = req.body;
+                const result = yield blogCollection.insertOne(blogs);
+                res.send(result);
+            }));
+            // Get All Blogs
+            app.get("/blogs", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const cursor = blogCollection.find({ isApproved: true });
+                const result = yield cursor.toArray();
+                res.send(result);
+            }));
+            app.get("/blogs/dashboard", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const cursor = blogCollection.find({});
+                const result = yield cursor.toArray();
+                res.send(result);
+            }));
+            // Blog Post Approve
+            app.put("/blogs/dashboard/approve/:blogId", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const myData = req.params.blogId;
+                console.log(myData);
+                const query = { _id: ObjectId(myData) };
+                const updateDoc = { $set: { isApproved: true } };
+                const result = yield blogCollection.updateOne(query, updateDoc);
+                res.json(result);
+            }));
+            // Get Single Blog
+            app.get("/singleBlog/:blogID", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const id = req.params.blogID;
+                const query = { _id: ObjectId(id) };
+                const result = yield blogCollection.find(query).toArray();
+                res.json(result);
+            }));
+            // Blog delete
+            app.delete("/blogs/delete/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const cursor = req.params.id;
+                console.log(cursor);
+                const query = { _id: ObjectId(cursor) };
+                const result = yield blogCollection.deleteOne(query);
+                res.send(result);
             }));
             /* mizan vai here */
             /* nobel vai here */
