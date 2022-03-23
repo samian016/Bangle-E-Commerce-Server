@@ -157,6 +157,21 @@ function run() {
                 const result = yield categoris.findOne(query);
                 res.json(result);
             }));
+            app.get("/singleShop/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const id = req.params.id;
+                const query = { email: id };
+                // console.log(id);
+                const result = yield users.findOne(query);
+                res.json(result);
+            }));
+            app.get("/singleShopProducts/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const id = req.params.id;
+                const query = { sellerID: id };
+                // console.log(id,"aitase kaka");
+                const cursor = yield productsCollection.find(query);
+                const result = yield cursor.toArray();
+                res.json(result);
+            }));
             app.put("/approved/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
                 const id = req.params.id;
                 const filter = { _id: ObjectId(id) };

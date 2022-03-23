@@ -183,7 +183,21 @@ async function run() {
             const result = await categoris.findOne(query);
             res.json(result);
         })
-
+        app.get("/singleShop/:id", async (req: Request, res: Response) => {
+            const id = req.params.id;
+            const query = { email: id };
+            // console.log(id);
+            const result = await users.findOne(query);
+            res.json(result);
+        })
+        app.get("/singleShopProducts/:id", async (req: Request, res: Response) => {
+            const id = req.params.id;
+            const query = { sellerID: id };
+            // console.log(id,"aitase kaka");
+            const cursor = await productsCollection.find(query);
+            const result = await cursor.toArray();
+            res.json(result);
+        })
 
         app.put("/approved/:id", async (req: Request, res: Response) => {
             const id = req.params.id;
