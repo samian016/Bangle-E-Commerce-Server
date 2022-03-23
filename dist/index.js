@@ -172,39 +172,6 @@ function run() {
                 // console.log(id);
                 res.json(result);
             }));
-            app.post("/checkout/add", (req, res) => __awaiter(this, void 0, void 0, function* () {
-                const checkout = req.body;
-                const results = yield checkoutCollection.insertOne(checkout);
-                res.json(results);
-            }));
-            app.get("/checkout", (req, res) => __awaiter(this, void 0, void 0, function* () {
-                const cursor = checkoutCollection.find({});
-                const result = yield cursor.toArray();
-                res.send(result);
-            }));
-            app.get("/pendingCheckout", (req, res) => __awaiter(this, void 0, void 0, function* () {
-                const cursor = checkoutCollection.find({ isApproved: false });
-                const result = yield cursor.toArray();
-                res.send(result);
-            }));
-            app.get("/pendingCheckout", (req, res) => __awaiter(this, void 0, void 0, function* () {
-                const cursor = checkoutCollection.find({ isApproved: false });
-                const result = yield cursor.toArray();
-                res.send(result);
-            }));
-            app.put("/checkout/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
-                const myData = req.params.id;
-                const query = { _id: ObjectId(myData) };
-                const updateDoc = { $set: { isApproved: true } };
-                const result = yield checkoutCollection.updateOne(query, updateDoc);
-                res.json(result);
-            }));
-            app.delete("/checkout/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
-                const cursor = req.params.id;
-                const query = { _id: ObjectId(cursor) };
-                const result = yield checkoutCollection.deleteOne(query);
-                res.send(result);
-            }));
             app.get("/products", (req, res) => __awaiter(this, void 0, void 0, function* () {
                 const cursor = productsCollection.find({
                     isApproved: true
