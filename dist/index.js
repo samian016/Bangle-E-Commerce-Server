@@ -156,6 +156,16 @@ function run() {
                 console.log(result);
                 res.send(result);
             }));
+            app.get("/pendingCheckout", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const cursor = checkoutCollection.find({ isApproved: false });
+                const result = yield cursor.toArray();
+                res.send(result);
+            }));
+            app.get("/pendingCheckout", (req, res) => __awaiter(this, void 0, void 0, function* () {
+                const cursor = checkoutCollection.find({ isApproved: false });
+                const result = yield cursor.toArray();
+                res.send(result);
+            }));
             app.get("/products", (req, res) => __awaiter(this, void 0, void 0, function* () {
                 const cursor = productsCollection.find({
                     isApproved: true

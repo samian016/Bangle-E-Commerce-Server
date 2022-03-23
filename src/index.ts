@@ -224,7 +224,16 @@ async function run() {
             console.log(result);
             res.send(result);
         })
-
+        app.get("/pendingCheckout", async(req: Request, res: Response) =>{
+            const cursor = checkoutCollection.find({isApproved: false });
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+        app.get("/pendingCheckout", async(req: Request, res: Response) =>{
+            const cursor = checkoutCollection.find({isApproved: false });
+            const result = await cursor.toArray();
+            res.send(result);
+        })
 
         /* Emon vai here */
 
