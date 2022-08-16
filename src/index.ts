@@ -503,13 +503,6 @@ async function run() {
 
 
 
-        /* alamgir vai here */
-
-        
-
-        /* alamgir vai here */
-
-
 
 
 
@@ -541,7 +534,7 @@ app.get("/", (req: Request, res: Response) => {
 
 
 app.listen(port, () => {
-    console.log("server is running now on port:", port);
+    console.log("server is running now on port =>", port);
 
 })
 
